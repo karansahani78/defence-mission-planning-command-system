@@ -19,7 +19,11 @@ import java.time.LocalDateTime;
         indexes = {
                 @Index(name = "idx_mission_code", columnList = "missionCode"),
                 @Index(name = "idx_mission_status", columnList = "status"),
-                @Index(name = "idx_mission_start_time", columnList = "startTime")
+                @Index(name = "idx_mission_priority", columnList = "priority"),
+                @Index(name = "idx_mission_security", columnList = "securityLevel"),
+                @Index(name = "idx_mission_start_time", columnList = "startTime"),
+                @Index(name = "idx_mission_created_at", columnList = "createdAt"),
+                @Index(name = "idx_mission_approved_at", columnList = "approvedAt")
         }
 )
 @Getter
@@ -33,9 +37,6 @@ public class Mission {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    /**
-     * Unique mission identifier (e.g. OPS-NEP-2026-001)
-     */
     @NotBlank
     @Size(max = 50)
     @Column(nullable = false, unique = true, length = 50)
@@ -50,42 +51,63 @@ public class Mission {
     @Column(length = 1000)
     private String missionObjective;
 
+    @NotNull
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false, length = 30)
+    @Column(nullable = false)
     private MissionStatus status;
 
+    @NotNull
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false, length = 20)
+    @Column(nullable = false)
     private MissionPriority priority;
 
+    @NotNull
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false, length = 20)
+    @Column(nullable = false)
     private SecurityLevel securityLevel;
 
-    /**
-     * Mission timeline
-     */
     @NotNull
     @Column(nullable = false)
     private LocalDateTime startTime;
 
     private LocalDateTime endTime;
 
-    /**
-     * Geographical area (can be lat/long or region name)
-     */
+    private LocalDateTime actualStartTime;
+    private LocalDateTime actualEndTime;
+
     @Size(max = 200)
     private String operationArea;
 
+    @Size(max = 500)
+    private String abortReason;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "created_by", nullable = false)
     private User createdBy;
 
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "commander_id")
     private User commander;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "approved_by")
+    private User approvedBy;
+
+    private LocalDateTime approvedAt;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "started_by")
+    private User startedBy;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "completed_by")
+    private User completedBy;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "aborted_by")
+    private User abortedBy;
+
+    private LocalDateTime abortedAt;
 
 
     @CreationTimestamp

@@ -4,12 +4,15 @@ import com.karan.mission_planning_system.dto.AssetRequestDto;
 import com.karan.mission_planning_system.dto.AssetResponseDto;
 import com.karan.mission_planning_system.entity.Asset;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public interface AssetMapper {
-    // Entity → DTO
+
+    @Mapping(source = "mission.id", target = "missionId")
+    @Mapping(source = "mission.missionCode", target = "missionCode")
     AssetResponseDto assetToAssetResponseDto(Asset asset);
 
-    // DTO → Entity
     Asset assetRequestDtoToAsset(AssetRequestDto assetRequestDto);
 }
+

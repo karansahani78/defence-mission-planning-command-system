@@ -4,9 +4,11 @@ import com.karan.mission_planning_system.entity.Asset;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
 public interface AssetRepository extends JpaRepository<Asset, Long> {
-    Optional<Asset> findByAssetByCode(String assetCode);
+    Optional<Asset> findByAssetCode(String assetCode);
+    List<Asset> findByMissionId(Long missionId);
 }

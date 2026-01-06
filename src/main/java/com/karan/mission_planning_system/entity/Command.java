@@ -59,13 +59,10 @@ public class Command {
     @JoinColumn(name = "issued_by", nullable = false)
     private User issuedBy;
 
-    /**
-     * Who must execute the command (unit / operator / system)
-     */
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "assigned_to")
     private User assignedTo;
-
 
     @NotNull
     @Column(nullable = false)
@@ -77,19 +74,15 @@ public class Command {
     @Column(nullable = false, length = 30)
     private CommandStatus status;
 
-    /**
-     * Security classification
-     */
+    @Size(max = 500)
+    private String failureReason;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
     private SecurityLevel securityLevel;
 
-    /**
-     * Emergency / override command flag
-     */
     @Column(nullable = false)
     private boolean emergency;
-
 
     @CreationTimestamp
     @Column(updatable = false)

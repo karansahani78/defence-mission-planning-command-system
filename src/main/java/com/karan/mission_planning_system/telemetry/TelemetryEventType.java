@@ -1,0 +1,18 @@
+package com.karan.mission_planning_system.telemetry;
+
+public enum TelemetryEventType {
+
+    COMMAND_ISSUED,
+    COMMAND_ACKNOWLEDGED,
+    COMMAND_EXECUTION_STARTED,
+    COMMAND_EXECUTION_COMPLETED,
+    COMMAND_FAILED,
+    COMMAND_CANCELLED,
+    COMMAND_EXPIRED,
+
+    // ⚠️ Security & anomaly
+    UNAUTHORIZED_ACTION,
+    INVALID_STATE_TRANSITION,
+    DEADLINE_VIOLATION,
+    EMERGENCY_OVERRIDE_USED
+}

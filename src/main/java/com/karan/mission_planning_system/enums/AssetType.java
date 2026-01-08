@@ -7,5 +7,6 @@ public enum AssetType {
     WEAPON_SYSTEM,
     RADAR,
     COMMUNICATION,
-    CYBER
+    CYBER,
+    HELICOPTER
 }

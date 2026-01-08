@@ -93,6 +93,18 @@
 			<version>1.5.5.Final</version>
 			<scope>provided</scope>
 		</dependency>
+		<!--Jackson -->
+		<!-- ✅ FORCE Jackson (Spring Boot compatible) -->
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>com.fasterxml.jackson.datatype</groupId>
+			<artifactId>jackson-datatype-jsr310</artifactId>
+		</dependency>
+
 
 		<!-- Database -->
 		<dependency>

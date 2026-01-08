@@ -32,8 +32,6 @@ public class UserServiceImpl implements UserService {
     private final SecurityUtil securityUtil;
     private final EmailService emailService;
 
-    /* ================= REGISTER ================= */
-
     @Override
     public UserResponseDto registerUser(UserRequestDto requestDto) {
 
@@ -62,8 +60,6 @@ public class UserServiceImpl implements UserService {
         return mapToResponse(user);
     }
 
-    /* ================= LOGIN ================= */
-
     @Override
     public LoginResponseDto login(LoginRequestDto requestDto) {
 
@@ -83,8 +79,6 @@ public class UserServiceImpl implements UserService {
                 .build();
     }
 
-    /* ================= PASSWORD RESET ================= */
-
     @Override
     public void sendPasswordResetOtp(String email) {
 
@@ -100,7 +94,7 @@ public class UserServiceImpl implements UserService {
         user.setPasswordResetOtp(otp);
         user.setOtpExpiryTime(LocalDateTime.now().plusMinutes(10));
 
-        userRepository.save(user); // ✅ REQUIRED
+        userRepository.save(user);
 
         emailService.send(
                 user.getEmail(),
@@ -124,19 +118,14 @@ public class UserServiceImpl implements UserService {
         user.setPasswordResetOtp(null);
         user.setOtpExpiryTime(null);
 
-        userRepository.save(user); // ✅ REQUIRED
+        userRepository.save(user);
     }
-
-
-    /* ================= PROFILE ================= */
 
     @Override
     @Transactional(readOnly = true)
     public UserResponseDto getCurrentUserProfile() {
         return mapToResponse(securityUtil.getCurrentUser());
     }
-
-    /* ================= PERSONNEL ================= */
 
     @Override
     @Transactional(readOnly = true)
@@ -146,20 +135,18 @@ public class UserServiceImpl implements UserService {
     ) {
         User requester = securityUtil.getCurrentUser();
 
-        // 🔐 Command-level access control
         if (requester.getRole() != Role.ROLE_SYSTEM_ADMIN &&
                 requester.getRole() != Role.ROLE_MISSION_COMMANDER) {
 
             throw new IllegalStateException("Access denied");
         }
 
-        // 🛡 Anti-enumeration protection
         int safeSize = Math.min(pageable.getPageSize(), 50);
         Pageable safePageable =
                 PageRequest.of(pageable.getPageNumber(), safeSize);
 
         return userRepository
-                .findByRoleAndEnabledTrue(role, safePageable) // ✅ NO CAST
+                .findByRoleAndEnabledTrue(role, safePageable)
                 .map(user -> PersonnelSummaryDto.builder()
                         .id(user.getId())
                         .username(user.getUsername())
@@ -168,8 +155,6 @@ public class UserServiceImpl implements UserService {
                         .build()
                 );
     }
-
-    /* ================= MAPPER ================= */
 
     private UserResponseDto mapToResponse(User user) {
         return UserResponseDto.builder()

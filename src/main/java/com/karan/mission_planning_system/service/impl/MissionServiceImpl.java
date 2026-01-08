@@ -30,8 +30,6 @@ public class MissionServiceImpl implements MissionService {
     private final SecurityUtil securityUtil;
     private final UserRepository userRepository;
 
-    /* ================= CREATE ================= */
-
     @Override
     public MissionResponseDto createMission(MissionRequestDto dto) {
 
@@ -49,14 +47,10 @@ public class MissionServiceImpl implements MissionService {
         );
         mission.setMinRequiredSustainmentLevel(dto.getMinRequiredSustainmentLevel());
 
-        // ❌ DO NOT assign commander during creation
-
         return missionMapper.missionToMissionResponseDto(
                 missionRepository.save(mission)
         );
     }
-
-    /* ================= UPDATE ================= */
 
     @Override
     public MissionResponseDto updateMission(Long missionId, MissionRequestDto dto) {
@@ -89,12 +83,8 @@ public class MissionServiceImpl implements MissionService {
             mission.setMinRequiredSustainmentLevel(dto.getMinRequiredSustainmentLevel());
         }
 
-        // ❌ Commander must NOT be set here
-
         return missionMapper.missionToMissionResponseDto(mission);
     }
-
-    /* ================= READ ================= */
 
     @Override
     @Transactional(readOnly = true)
@@ -122,13 +112,6 @@ public class MissionServiceImpl implements MissionService {
                 .collect(Collectors.toList());
     }
 
-    /* ================= WORKFLOW ================= */
-
-    /**
-     * ✔ SYSTEM_ADMIN approves mission
-     * ✔ Assigns commander
-     * ✔ Creates command authority
-     */
     @Override
     public void approveMission(Long missionId, Long commanderId) {
 
@@ -155,9 +138,6 @@ public class MissionServiceImpl implements MissionService {
         mission.setStatus(MissionStatus.APPROVED);
     }
 
-    /**
-     * ✔ Only assigned commander can start mission
-     */
     @Override
     public void startMission(Long missionId) {
 
@@ -234,8 +214,6 @@ public class MissionServiceImpl implements MissionService {
         mission.setAbortedBy(currentUser);
         mission.setAbortedAt(LocalDateTime.now());
     }
-
-    /* ================= INTERNAL ================= */
 
     private Mission getMission(Long missionId) {
         return missionRepository.findById(missionId)

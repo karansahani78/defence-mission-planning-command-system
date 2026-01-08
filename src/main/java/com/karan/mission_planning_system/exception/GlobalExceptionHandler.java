@@ -13,8 +13,6 @@ import java.util.Map;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    /* ================= DUPLICATE (SERVICE LEVEL) ================= */
-
     @ExceptionHandler(DuplicateResourceException.class)
     public ResponseEntity<?> handleDuplicateResource(
             DuplicateResourceException ex,
@@ -30,8 +28,6 @@ public class GlobalExceptionHandler {
                 )
         );
     }
-
-    /* ================= DUPLICATE (DATABASE LEVEL) ================= */
 
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<?> handleDataIntegrityViolation(
@@ -49,8 +45,6 @@ public class GlobalExceptionHandler {
         );
     }
 
-    /* ================= BAD REQUEST ================= */
-
     @ExceptionHandler(IllegalStateException.class)
     public ResponseEntity<?> handleIllegalState(
             IllegalStateException ex,
@@ -66,8 +60,6 @@ public class GlobalExceptionHandler {
                 )
         );
     }
-
-    /* ================= FALLBACK ================= */
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<?> handleGenericException(

@@ -19,12 +19,6 @@ public class CommandController {
 
     private final CommandService commandService;
 
-    /* ================= ISSUE ================= */
-
-    /**
-     * ✔ Only Mission Commander may ISSUE commands
-     * ✔ Mission state validation handled in service
-     */
     @PreAuthorize("hasRole('MISSION_COMMANDER')")
     @PostMapping
     public ResponseEntity<CommandResponseDto> issueCommand(
@@ -35,11 +29,6 @@ public class CommandController {
                 .body(commandService.issueCommand(requestDto));
     }
 
-    /* ================= READ ================= */
-
-    /**
-     * ✔ Read-only access for all operational roles
-     */
     @PreAuthorize("""
         hasAnyRole(
             'SYSTEM_ADMIN',
@@ -94,11 +83,6 @@ public class CommandController {
         );
     }
 
-    /* ================= COMMAND LIFECYCLE ================= */
-
-    /**
-     * ✔ Acknowledge = recipient / commander authority
-     */
     @PreAuthorize("hasRole('MISSION_COMMANDER')")
     @PutMapping("/{commandId}/acknowledge")
     public ResponseEntity<Void> acknowledgeCommand(
@@ -108,9 +92,6 @@ public class CommandController {
         return ResponseEntity.noContent().build();
     }
 
-    /**
-     * ✔ Execute = assigned executor OR commander (validated in service)
-     */
     @PreAuthorize("hasRole('MISSION_COMMANDER')")
     @PutMapping("/{commandId}/execute")
     public ResponseEntity<Void> executeCommand(
@@ -120,9 +101,6 @@ public class CommandController {
         return ResponseEntity.noContent().build();
     }
 
-    /**
-     * ✔ Complete = executor confirmation
-     */
     @PreAuthorize("hasRole('MISSION_COMMANDER')")
     @PutMapping("/{commandId}/complete")
     public ResponseEntity<Void> completeCommand(
@@ -132,9 +110,6 @@ public class CommandController {
         return ResponseEntity.noContent().build();
     }
 
-    /**
-     * ✔ Fail = executor with reason (mandatory)
-     */
     @PreAuthorize("hasRole('MISSION_COMMANDER')")
     @PutMapping("/{commandId}/fail")
     public ResponseEntity<Void> failCommand(
@@ -145,10 +120,6 @@ public class CommandController {
         return ResponseEntity.noContent().build();
     }
 
-    /**
-     * ✔ Cancel = Command authority override
-     * ✔ SYSTEM_ADMIN allowed (real defence override)
-     */
     @PreAuthorize("hasAnyRole('SYSTEM_ADMIN','MISSION_COMMANDER')")
     @PutMapping("/{commandId}/cancel")
     public ResponseEntity<Void> cancelCommand(

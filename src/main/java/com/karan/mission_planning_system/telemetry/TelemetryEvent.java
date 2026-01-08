@@ -24,6 +24,6 @@ public class TelemetryEvent {
     private Long missionId;
     private String missionCode;
 
-    private String actor;           // username
+    private String actor;
     private String severity;        // INFO / WARNING / CRITICAL
 }

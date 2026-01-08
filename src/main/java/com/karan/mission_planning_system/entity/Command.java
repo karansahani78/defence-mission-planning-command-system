@@ -46,8 +46,6 @@ public class Command {
     @Column(nullable = false, length = 2000)
     private String instruction;
 
-    /* ================= CONTEXT ================= */
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "mission_id", nullable = false)
     private Mission mission;
@@ -55,8 +53,6 @@ public class Command {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "target_asset_id")
     private Asset targetAsset;
-
-    /* ================= AUTHORITY ================= */
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "issued_by", nullable = false)
@@ -70,8 +66,6 @@ public class Command {
     @JoinColumn(name = "executed_by")
     private User executedBy;
 
-    /* ================= TIMING ================= */
-
     @NotNull
     @Column(nullable = false)
     private LocalDateTime issuedAt;
@@ -80,16 +74,12 @@ public class Command {
     private LocalDateTime acknowledgedAt;
     private LocalDateTime executedAt;
 
-    /* ================= STATUS ================= */
-
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 30)
     private CommandStatus status;
 
     @Column(length = 500)
     private String failureReason;
-
-    /* ================= SECURITY ================= */
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
@@ -98,14 +88,10 @@ public class Command {
     @Column(nullable = false)
     private boolean emergency = false;
 
-    /* ================= SYSTEM ================= */
-
     @CreationTimestamp
     @Column(updatable = false)
     private LocalDateTime createdAt;
 
     @UpdateTimestamp
     private LocalDateTime updatedAt;
-
-
 }

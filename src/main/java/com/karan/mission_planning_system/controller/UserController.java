@@ -19,8 +19,6 @@ public class UserController {
 
     private final UserService userService;
 
-    /* ================= AUTH ================= */
-
     @PostMapping("/register")
     @PreAuthorize("hasRole('SYSTEM_ADMIN')")
     public ResponseEntity<UserResponseDto> registerUser(
@@ -40,8 +38,6 @@ public class UserController {
                 .body(userService.login(requestDto));
     }
 
-    /* ================= PROFILE ================= */
-
     @GetMapping("/me")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<UserResponseDto> getCurrentUserProfile() {
@@ -51,16 +47,6 @@ public class UserController {
                 .body(userService.getCurrentUserProfile());
     }
 
-    /* ================= PERSONNEL (DEFENSE-GRADE) ================= */
-
-    /**
-     * Defense-grade personnel lookup
-     *
-     * ✔ Role-filtered
-     * ✔ Paginated
-     * ✔ Anti-enumeration
-     * ✔ Restricted to command authority
-     */
     @GetMapping("/personnel")
     @PreAuthorize("hasAnyRole('SYSTEM_ADMIN','MISSION_COMMANDER')")
     public ResponseEntity<Page<PersonnelSummaryDto>> getPersonnelByRole(
@@ -71,8 +57,6 @@ public class UserController {
                 .status(HttpStatus.OK)
                 .body(userService.getPersonnelByRole(role, pageable));
     }
-
-    /* ================= PASSWORD RESET ================= */
 
     @PostMapping("/password/reset-request")
     public ResponseEntity<Void> sendPasswordResetOtp(

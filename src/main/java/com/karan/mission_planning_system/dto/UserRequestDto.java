@@ -25,8 +25,5 @@ public class UserRequestDto {
     @Size(min = 8, max = 100)
     private String password;
 
-    /**
-     * Only SYSTEM_ADMIN can assign roles
-     */
     private Role role;
 }

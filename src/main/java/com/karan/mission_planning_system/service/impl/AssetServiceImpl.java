@@ -18,7 +18,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -36,30 +35,20 @@ public class AssetServiceImpl implements AssetService {
 
         Asset asset = assetMapper.assetRequestDtoToAsset(dto);
 
-        /* ===== REQUIRED DEFAULTS (FIX) ===== */
-
         asset.setActive(true);
         asset.setStatus(AssetStatus.AVAILABLE);
 
-        // NOT NULL
         asset.setReadinessLevel(
                 dto.getReadinessLevel() != null ? dto.getReadinessLevel() : 100
         );
 
-        // 🔴 REQUIRED: DB NOT NULL
         asset.setMinimumReadinessRequired(70);
-
-        // 🔴 REQUIRED: DB NOT NULL
         asset.setOperationalState(OperationalState.OPERATIONAL);
-
-        // 🔴 REQUIRED: DB NOT NULL
         asset.setRequiresCommanderApproval(false);
 
         Asset saved = assetRepository.save(asset);
         return assetMapper.assetToAssetResponseDto(saved);
     }
-
-    /* ================= UPDATE ================= */
 
     @Override
     public AssetResponseDto updateAsset(Long assetId, AssetRequestDto dto) {
@@ -67,27 +56,19 @@ public class AssetServiceImpl implements AssetService {
         Asset asset = assetRepository.findById(assetId)
                 .orElseThrow(() -> new AssetNotFoundException("Asset not found: " + assetId));
 
-        /* ================= IDENTITY & CLASSIFICATION ================= */
-
         asset.setAssetName(dto.getAssetName());
         asset.setAssetType(dto.getAssetType());
         asset.setDescription(dto.getDescription());
         asset.setSecurityLevel(dto.getSecurityLevel());
 
-        /* ================= OWNERSHIP & LOCATION ================= */
-
         asset.setOwningUnit(dto.getOwningUnit());
         asset.setHomeBase(dto.getHomeBase());
         asset.setCurrentLocation(dto.getCurrentLocation());
-
-        /* ================= OPERATIONAL CAPABILITY ================= */
 
         asset.setMaxSustainmentCapacity(dto.getMaxSustainmentCapacity());
         asset.setCurrentSustainmentLevel(dto.getCurrentSustainmentLevel());
         asset.setMaxEnduranceHours(dto.getMaxEnduranceHours());
         asset.setOperationalRangeKm(dto.getOperationalRangeKm());
-
-        /* ================= READINESS ================= */
 
         if (dto.getReadinessLevel() != null) {
             asset.setReadinessLevel(dto.getReadinessLevel());
@@ -95,17 +76,12 @@ public class AssetServiceImpl implements AssetService {
 
         asset.setOperationalRestriction(dto.getOperationalRestriction());
 
-        /* ================= MAINTENANCE ================= */
-
         asset.setLastMaintenanceAt(dto.getLastMaintenanceAt());
         asset.setNextMaintenanceDueAt(dto.getNextMaintenanceDueAt());
 
         Asset saved = assetRepository.save(asset);
         return assetMapper.assetToAssetResponseDto(saved);
     }
-
-
-    /* ================= READ ================= */
 
     @Override
     @Transactional(readOnly = true)
@@ -130,8 +106,6 @@ public class AssetServiceImpl implements AssetService {
                 .map(assetMapper::assetToAssetResponseDto)
                 .collect(Collectors.toList());
     }
-
-    /* ================= MISSION ASSIGNMENT ================= */
 
     @Override
     public void assignAssetToMission(Long assetId, Long missionId) {
@@ -183,8 +157,6 @@ public class AssetServiceImpl implements AssetService {
         asset.setStatus(AssetStatus.AVAILABLE);
     }
 
-    /* ================= DEACTIVATION ================= */
-
     @Override
     public void deactivateAsset(Long assetId) {
 
@@ -195,8 +167,6 @@ public class AssetServiceImpl implements AssetService {
         asset.setStatus(AssetStatus.DECOMMISSIONED);
         asset.setReadinessLevel(0);
     }
-
-    /* ================= QUERY ================= */
 
     @Override
     @Transactional(readOnly = true)

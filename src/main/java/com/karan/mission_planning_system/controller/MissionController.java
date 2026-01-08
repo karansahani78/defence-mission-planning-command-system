@@ -19,11 +19,6 @@ public class MissionController {
 
     private final MissionService missionService;
 
-    /* ================= CREATE ================= */
-
-    /**
-     * Mission planning is performed by Mission Planners only.
-     */
     @PreAuthorize("hasRole('MISSION_PLANNER')")
     @PostMapping
     public ResponseEntity<MissionResponseDto> createMission(
@@ -34,12 +29,6 @@ public class MissionController {
                 .body(missionService.createMission(requestDto));
     }
 
-    /* ================= UPDATE ================= */
-
-    /**
-     * Only planners can modify missions
-     * while they are in DRAFT or PLANNED state.
-     */
     @PreAuthorize("hasRole('MISSION_PLANNER')")
     @PutMapping("/{missionId}")
     public ResponseEntity<MissionResponseDto> updateMission(
@@ -51,11 +40,6 @@ public class MissionController {
                 .body(missionService.updateMission(missionId, requestDto));
     }
 
-    /* ================= READ ================= */
-
-    /**
-     * All operational roles may view missions.
-     */
     @PreAuthorize("""
         hasAnyRole(
             'SYSTEM_ADMIN',
@@ -109,12 +93,6 @@ public class MissionController {
         );
     }
 
-    /* ================= COMMAND AUTHORITY ================= */
-
-    /**
-     * ✔ SYSTEM_ADMIN approves mission
-     * ✔ Assigns Mission Commander
-     */
     @PreAuthorize("hasRole('SYSTEM_ADMIN')")
     @PutMapping("/{missionId}/approve")
     public ResponseEntity<Void> approveMission(
@@ -128,9 +106,6 @@ public class MissionController {
                 .build();
     }
 
-    /**
-     * ✔ Only assigned commander may start mission
-     */
     @PreAuthorize("hasRole('MISSION_COMMANDER')")
     @PutMapping("/{missionId}/start")
     public ResponseEntity<Void> startMission(@PathVariable Long missionId) {
@@ -142,9 +117,6 @@ public class MissionController {
                 .build();
     }
 
-    /**
-     * ✔ Hold mission (command decision)
-     */
     @PreAuthorize("hasRole('MISSION_COMMANDER')")
     @PutMapping("/{missionId}/hold")
     public ResponseEntity<Void> holdMission(@PathVariable Long missionId) {
@@ -156,9 +128,6 @@ public class MissionController {
                 .build();
     }
 
-    /**
-     * ✔ Complete mission (assigned commander only)
-     */
     @PreAuthorize("hasRole('MISSION_COMMANDER')")
     @PutMapping("/{missionId}/complete")
     public ResponseEntity<Void> completeMission(@PathVariable Long missionId) {
@@ -170,9 +139,6 @@ public class MissionController {
                 .build();
     }
 
-    /**
-     * ✔ Abort mission (assigned commander only)
-     */
     @PreAuthorize("hasRole('MISSION_COMMANDER')")
     @PutMapping("/{missionId}/abort")
     public ResponseEntity<Void> abortMission(

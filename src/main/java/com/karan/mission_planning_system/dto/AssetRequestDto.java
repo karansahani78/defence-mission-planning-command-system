@@ -14,8 +14,6 @@ import java.time.LocalDateTime;
 @Builder
 public class AssetRequestDto {
 
-    /* ================= IDENTITY ================= */
-
     @NotBlank(message = "Asset code is required")
     @Size(max = 50)
     private String assetCode;
@@ -30,12 +28,8 @@ public class AssetRequestDto {
     @Size(max = 500)
     private String description;
 
-    /* ================= CLASSIFICATION ================= */
-
     @NotNull(message = "Security level is required")
     private SecurityLevel securityLevel;
-
-    /* ================= OWNERSHIP & LOCATION ================= */
 
     @Size(max = 150)
     private String owningUnit;
@@ -45,8 +39,6 @@ public class AssetRequestDto {
 
     @Size(max = 200)
     private String currentLocation;
-
-    /* ================= OPERATIONAL CAPABILITY ================= */
 
     @PositiveOrZero
     private Double maxSustainmentCapacity;
@@ -60,24 +52,15 @@ public class AssetRequestDto {
     @PositiveOrZero
     private Double operationalRangeKm;
 
-    /* ================= READINESS & HEALTH ================= */
-
     @Min(0)
     @Max(100)
-    private Integer readinessLevel; // optional, defaults to 100
+    private Integer readinessLevel;
 
     @Size(max = 300)
     private String operationalRestriction;
 
-    /* ================= MAINTENANCE ================= */
-
     private LocalDateTime lastMaintenanceAt;
     private LocalDateTime nextMaintenanceDueAt;
 
-    /* ================= MISSION LINK ================= */
-
-    /**
-     * Optional mission assignment (validated in service layer)
-     */
     private Long missionId;
 }

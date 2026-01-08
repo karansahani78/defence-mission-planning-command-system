@@ -9,13 +9,13 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface AssetMapper {
 
-    /* ================= ENTITY → RESPONSE ================= */
+    /* ENTITY → RESPONSE */
 
     @Mapping(source = "mission.id", target = "missionId")
     @Mapping(source = "mission.missionCode", target = "missionCode")
     AssetResponseDto assetToAssetResponseDto(Asset asset);
 
-    /* ================= REQUEST → ENTITY ================= */
+    /* REQUEST → ENTITY */
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "mission", ignore = true)

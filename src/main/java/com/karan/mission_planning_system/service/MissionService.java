@@ -22,7 +22,7 @@ public interface MissionService {
     // Fetch all missions
     List<MissionResponseDto> getAllMissions();
 
-    // ✅ Approve mission AND assign commander (SYSTEM_ADMIN only)
+    // Approve mission AND assign commander (SYSTEM_ADMIN only)
     void approveMission(Long missionId, Long commanderId);
 
     // Start mission execution (COMMANDER)

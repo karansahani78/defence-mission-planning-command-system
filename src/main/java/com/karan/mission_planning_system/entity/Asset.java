@@ -29,8 +29,6 @@ import java.time.LocalDateTime;
 @Builder
 public class Asset {
 
-    /* ================= IDENTITY ================= */
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -38,7 +36,7 @@ public class Asset {
     @NotBlank
     @Size(max = 50)
     @Column(nullable = false, unique = true, length = 50)
-    private String assetCode;   // e.g. FJT-EW-009
+    private String assetCode;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 30)
@@ -53,14 +51,10 @@ public class Asset {
     @Column(length = 500)
     private String description;
 
-    /* ================= CLASSIFICATION ================= */
-
-    // Administrative lifecycle status
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 30)
     private AssetStatus status;
 
-    // Operational availability state (real mission logic uses this)
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 30)
     private OperationalState operationalState;
@@ -69,11 +63,9 @@ public class Asset {
     @Column(nullable = false, length = 20)
     private SecurityLevel securityLevel;
 
-    /* ================= OWNERSHIP & LOCATION ================= */
-
     @Size(max = 150)
     @Column(length = 150)
-    private String owningUnit;        // Squadron / Fleet / Command
+    private String owningUnit;
 
     @Size(max = 200)
     @Column(length = 200)
@@ -83,9 +75,6 @@ public class Asset {
     @Column(length = 200)
     private String currentLocation;
 
-    /* ================= OPERATIONAL CAPABILITY ================= */
-
-    // Generic sustainment abstraction (fuel / battery / energy / ammo equivalent)
     @Positive
     private Double maxSustainmentCapacity;
 
@@ -101,8 +90,6 @@ public class Asset {
 
     @Positive
     private Double operationalRangeKm;
-
-    /* ================= READINESS & SAFETY ================= */
 
     @Min(0)
     @Max(100)
@@ -121,32 +108,22 @@ public class Asset {
     @Column(length = 300)
     private String operationalRestriction;
 
-    /* ================= COMMAND AUTHORIZATION ================= */
-
     @Column(nullable = false)
     private boolean requiresCommanderApproval = false;
 
     @Size(max = 100)
     @Column(length = 100)
-    private String approvalAuthority; // e.g. AIR_FORCE_COMMAND
-
-    /* ================= MAINTENANCE ================= */
+    private String approvalAuthority;
 
     private LocalDateTime lastMaintenanceAt;
     private LocalDateTime nextMaintenanceDueAt;
 
-    /* ================= LIFECYCLE ================= */
-
     private LocalDate commissionedDate;
     private LocalDate expectedServiceEnd;
-
-    /* ================= MISSION LINK ================= */
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "mission_id")
     private Mission mission;
-
-    /* ================= SYSTEM ================= */
 
     @Column(nullable = false)
     private boolean active = true;

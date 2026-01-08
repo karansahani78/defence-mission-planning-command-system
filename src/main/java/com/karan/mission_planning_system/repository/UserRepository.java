@@ -22,6 +22,5 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     Optional<User> findByPasswordResetOtp(String otp);
 
-    // ✅ Correct pageable query
     Page<User> findByRoleAndEnabledTrue(Role role, Pageable pageable);
 }

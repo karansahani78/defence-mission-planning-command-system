@@ -25,7 +25,6 @@ public class CustomUserDetailsService implements UserDetailsService {
                 .withUsername(user.getUsername())
                 .password(user.getPassword())
 
-                // ✅ CRITICAL FIX: use authorities, NOT roles
                 .authorities(user.getRole().name())
 
                 .disabled(!user.isEnabled())

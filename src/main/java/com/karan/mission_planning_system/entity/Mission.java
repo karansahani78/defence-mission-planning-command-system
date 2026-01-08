@@ -31,8 +31,6 @@ import java.time.LocalDateTime;
 @Builder
 public class Mission {
 
-    /* ================= IDENTITY ================= */
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -51,8 +49,6 @@ public class Mission {
     @Column(length = 1000)
     private String missionObjective;
 
-    /* ================= CLASSIFICATION ================= */
-
     @NotNull
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 30)
@@ -68,27 +64,19 @@ public class Mission {
     @Column(nullable = false, length = 20)
     private SecurityLevel securityLevel;
 
-    /* ================= PLANNING PARAMETERS ================= */
-
-    // Used to validate asset endurance
     @Positive
     private Double estimatedDurationHours;
 
-    // Used to validate asset operational range
     @Positive
     private Double estimatedRangeKm;
 
-    // Minimum readiness % required for ALL assigned assets
     @Min(0)
     @Max(100)
     @Column(nullable = false)
     private Integer minAssetReadiness = 70;
 
-    // Minimum sustainment required at mission start (fuel/battery)
     @PositiveOrZero
     private Double minRequiredSustainmentLevel;
-
-    /* ================= SCHEDULING ================= */
 
     @NotNull
     @Column(nullable = false)
@@ -100,15 +88,11 @@ public class Mission {
     private LocalDateTime actualStartTime;
     private LocalDateTime actualEndTime;
 
-    /* ================= OPERATIONAL CONTEXT ================= */
-
     @Size(max = 200)
     private String operationArea;
 
     @Size(max = 500)
     private String abortReason;
-
-    /* ================= COMMAND & CONTROL ================= */
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "created_by", nullable = false)
@@ -137,8 +121,6 @@ public class Mission {
     private User abortedBy;
 
     private LocalDateTime abortedAt;
-
-    /* ================= SYSTEM ================= */
 
     @CreationTimestamp
     @Column(updatable = false)

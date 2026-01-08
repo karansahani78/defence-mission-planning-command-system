@@ -24,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -36,8 +37,6 @@ public class CommandServiceImpl implements CommandService {
     private final CommandMapper commandMapper;
     private final SecurityUtil securityUtil;
     private final TelemetryService telemetryService;
-
-    /* ================= ISSUE ================= */
 
     @Override
     public CommandResponseDto issueCommand(CommandRequestDto requestDto) {
@@ -98,8 +97,6 @@ public class CommandServiceImpl implements CommandService {
         return commandMapper.commandToCommandResponseDto(saved);
     }
 
-    /* ================= READ ================= */
-
     @Override
     @Transactional(readOnly = true)
     public CommandResponseDto getCommandById(Long commandId) {
@@ -124,8 +121,6 @@ public class CommandServiceImpl implements CommandService {
                 .map(commandMapper::commandToCommandResponseDto)
                 .collect(Collectors.toList());
     }
-
-    /* ================= WORKFLOW ================= */
 
     @Override
     public void acknowledgeCommand(Long commandId) {
@@ -227,8 +222,6 @@ public class CommandServiceImpl implements CommandService {
         safeTelemetry(command, "COMMAND_CANCELLED");
     }
 
-    /* ================= INTERNAL ================= */
-
     private Command getCommand(Long commandId) {
         return commandRepository.findById(commandId)
                 .orElseThrow(() ->
@@ -240,7 +233,6 @@ public class CommandServiceImpl implements CommandService {
         try {
             telemetryService.publishCommandEvent(command, event);
         } catch (Exception ex) {
-            // Telemetry must NEVER break command lifecycle
             System.err.println(
                     "Telemetry failure [" + event + "] for command "
                             + command.getCommandCode());

@@ -14,8 +14,6 @@ import java.time.LocalDateTime;
 @Builder
 public class MissionRequestDto {
 
-    /* ================= IDENTITY ================= */
-
     @NotBlank(message = "Mission code is required")
     @Size(max = 50)
     private String missionCode;
@@ -27,15 +25,11 @@ public class MissionRequestDto {
     @Size(max = 1000)
     private String missionObjective;
 
-    /* ================= CLASSIFICATION ================= */
-
     @NotNull(message = "Mission priority is required")
     private MissionPriority priority;
 
     @NotNull(message = "Security level is required")
     private SecurityLevel securityLevel;
-
-    /* ================= PLANNING PARAMETERS ================= */
 
     @Positive
     private Double estimatedDurationHours;
@@ -45,27 +39,18 @@ public class MissionRequestDto {
 
     @Min(0)
     @Max(100)
-    private Integer minAssetReadiness; // default handled in service
+    private Integer minAssetReadiness;
 
     @PositiveOrZero
     private Double minRequiredSustainmentLevel;
-
-    /* ================= SCHEDULING ================= */
 
     @NotNull(message = "Planned start time is required")
     private LocalDateTime startTime;
 
     private LocalDateTime plannedEndTime;
 
-    /* ================= OPERATIONAL CONTEXT ================= */
-
     @Size(max = 200)
     private String operationArea;
 
-    /* ================= COMMAND ================= */
-
-    /**
-     * Optional: assign commander during planning
-     */
     private Long commanderId;
 }

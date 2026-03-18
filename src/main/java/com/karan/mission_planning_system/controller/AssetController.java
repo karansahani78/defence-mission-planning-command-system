@@ -26,21 +26,21 @@ public class AssetController {
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
-    @PreAuthorize("hasAnyRole('MISSION_PLANNER','MISSION_COMMANDER','OPERATIONS_ANALYST')")
+    @PreAuthorize("hasAnyRole('MISSION_PLANNER','MISSION_COMMANDER','OPERATIONS_ANALYST','SYSTEM_ADMIN')")
     @GetMapping
     public ResponseEntity<List<AssetResponseDto>> getAllAssets() {
         List<AssetResponseDto> response = assetService.getAllAssets();
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAnyRole('MISSION_PLANNER','MISSION_COMMANDER','OPERATIONS_ANALYST')")
+    @PreAuthorize("hasAnyRole('MISSION_PLANNER','MISSION_COMMANDER','OPERATIONS_ANALYST','SYSTEM_ADMIN')")
     @GetMapping("/code/{assetCode}")
     public ResponseEntity<AssetResponseDto> getAssetByCode(@PathVariable("assetCode") String assetCode) {
         AssetResponseDto response = assetService.getAssetByCode(assetCode);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAnyRole('MISSION_PLANNER','MISSION_COMMANDER','OPERATIONS_ANALYST')")
+    @PreAuthorize("hasAnyRole('MISSION_PLANNER','MISSION_COMMANDER','OPERATIONS_ANALYST','SYSTEM_ADMIN')")
     @GetMapping("/{assetId}")
     public ResponseEntity<AssetResponseDto> getAssetById(@PathVariable("assetId") Long assetId) {
         AssetResponseDto response = assetService.getAssetById(assetId);

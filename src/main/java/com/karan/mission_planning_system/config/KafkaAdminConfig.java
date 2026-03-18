@@ -16,7 +16,7 @@ public class KafkaAdminConfig {
         Map<String, Object> configs = new HashMap<>();
         configs.put(
                 AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG,
-                "localhost:9092"
+                "localhost:29092"
         );
         return new KafkaAdmin(configs);
     }
